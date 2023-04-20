@@ -23,7 +23,7 @@ variable "host_instance_type" {
 
 variable "deployment_mode" {
   type    = string
-  description = "(Optional) Deployment mode of the broker. Valid values are SINGLE_INSTANCE, ACTIVE_STANDBY_MULTI_AZ, and CLUSTER_MULTI_AZ"
+  description = "(Optional) Deployment mode of the broker. Valid values are `SINGLE_INSTANCE`, `ACTIVE_STANDBY_MULTI_AZ`, and `CLUSTER_MULTI_AZ`"
   default = "SINGLE_INSTANCE"
 }
 
