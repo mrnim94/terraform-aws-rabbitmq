@@ -13,7 +13,7 @@ provider "aws" {
 }
 module "rabbitmq" {
   source  = "mrnim94/rabbitmq/aws"
-  version = "0.0.11"
+  version = "0.0.12"
   # insert the 2 required variables here
   rabbitmq_name = "nimtechnology-rabbitmq"
   engine_version = "3.8.6"
