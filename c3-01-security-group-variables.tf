@@ -1,3 +1,8 @@
+variable "create_security_group" {
+  type    = bool
+  default = false
+}
+
 variable "security_group_name" {
   type    = string
   default = "RabbitMQ security group name."
