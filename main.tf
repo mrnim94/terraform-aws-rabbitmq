@@ -31,14 +31,6 @@ resource "aws_mq_broker" "rabbitmq" {
   auto_minor_version_upgrade = var.auto_minor_version_upgrade
   publicly_accessible        = var.publicly_accessible
   subnet_ids                 = var.subnet_ids
-  
-  dynamic "encryption_options" {
-    for_each = var.encryption_enabled ? ["true"] : []
-    content {
-      kms_key_id        = var.kms_mq_key_arn
-      use_aws_owned_key = var.use_aws_owned_key
-    }
-  }
 
   security_groups = local.broker_security_groups
 

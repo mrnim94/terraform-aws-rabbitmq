@@ -44,24 +44,6 @@ variable "subnet_ids" {
   description = "List of VPC subnet IDs"
 }
 
-variable "encryption_enabled" {
-  type        = bool
-  description = "Flag to enable/disable Amazon MQ encryption at rest"
-  default     = true
-}
-
-variable "kms_mq_key_arn" {
-  type        = string
-  description = "ARN of the AWS KMS key used for Amazon MQ encryption"
-  default     = null
-}
-
-variable "use_aws_owned_key" {
-  type        = bool
-  description = "Boolean to enable an AWS owned Key Management Service (KMS) Customer Master Key (CMK) for Amazon MQ encryption that is not in your account"
-  default     = true
-}
-
 variable "tags" {
   description = "A mapping of tags to assign to security group"
   type        = map(string)
