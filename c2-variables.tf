@@ -5,7 +5,7 @@ variable "rabbitmq_name" {
 
 variable "engine_type" {
   type        = string
-  description = "(optional) Type of broker engine."
+  description = "(Optional) Type of broker engine."
   default     = "RabbitMQ"
 }
 
@@ -41,7 +41,10 @@ variable "publicly_accessible" {
 
 variable "subnet_ids" {
   type        = list(string)
-  description = "List of VPC subnet IDs"
+  description = <<EOF
+    (Required) List of VPC subnet IDs.
+    If you install Rabbitmq with Deployment mode: "SINGLE_INSTANCE", you will have to declare single subnet. Example: ["subnet-0088935e564caec68"]
+  EOF
 }
 
 variable "tags" {

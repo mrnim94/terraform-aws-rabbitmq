@@ -25,20 +25,18 @@ variable "ingress_with_cidr_blocks" {
   description = <<-EOT
     List of ingress rules to create where 'cidr_blocks' is used
     Example:
-    ```
-    ingress_with_cidr_blocks = [
-      {
-        from_port   = 8080
-        to_port     = 8090
-        protocol    = "tcp"
-        description = "User-service ports"
-        cidr_blocks = "10.10.0.0/16"
-      },
-      {
-        rule        = "postgresql-tcp"
-        cidr_blocks = "0.0.0.0/0"
-      },
-    ]
-    ```
+      ingress_with_cidr_blocks = [
+        {
+          from_port   = 8080
+          to_port     = 8090
+          protocol    = "tcp"
+          description = "User-service ports"
+          cidr_blocks = "10.10.0.0/16"
+        },
+        {
+          rule        = "postgresql-tcp"
+          cidr_blocks = "0.0.0.0/0"
+        },
+      ]
     EOT
 }
