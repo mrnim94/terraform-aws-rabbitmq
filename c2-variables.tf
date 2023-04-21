@@ -98,3 +98,8 @@ variable "maintenance_window_start_time" {
     mw_time_zone   = "UTC"
   }
 }
+
+variable "security_groups" {
+  type    = list(string)
+  default = []
+}
