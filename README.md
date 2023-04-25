@@ -6,20 +6,42 @@ https://github.dev/dasmeta/terraform-aws-rabbitmq/blob/main/security-group.tf
 https://github.dev/vainkop/terraform-aws-rabbitmq/blob/master/main.tf  
 https://github.dev/cloudposse/terraform-aws-mq-broker/blob/master/variables.tf  
 
-### Single-node
+### Single-node and Create Security Group
 ```hcl
 provider "aws" {
   region     = var.aws_region
 }
+data "aws_vpc" "selected" {
+  tags = {
+    Name = "<value>" # Replace with your VPC's tag name
+  }
+}
+
+data "aws_subnet" "selected" {
+  vpc_id = data.aws_vpc.selected.id
+
+  tags = {
+    Name = "<value>" # Replace with your Subnet's tag name
+  }
+}
+
+# output "vpc_id" {
+#   value = data.aws_vpc.selected.id
+# }
+
+# output "subnet_id" {
+#   value = data.aws_subnet.selected.id
+# }
+
 module "rabbitmq" {
   source  = "mrnim94/rabbitmq/aws"
   version = "0.0.12"
   # insert the 2 required variables here
-  rabbitmq_name = "nimtechnology-rabbitmq"
+  rabbitmq_name = "rabbitmq-nimtechnology"
   engine_version = "3.8.6"
   deployment_mode = "SINGLE_INSTANCE"
-  subnet_ids = ["subnet-0088935e564caec68"]
-  vpc_id = "vpc-04c4898260c0eb6e2"
+  subnet_ids = [data.aws_subnet.selected.id]
+  vpc_id = data.aws_vpc.selected.id
   create_security_group = "true"
   ingress_with_cidr_blocks = [
     {
