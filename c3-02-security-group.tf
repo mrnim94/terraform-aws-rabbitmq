@@ -2,7 +2,7 @@ module "security_group" {
   count = var.create_security_group ? 1 : 0
 
   source  = "terraform-aws-modules/security-group/aws"
-  version = "4.17.2"
+  version = "5.0.0"
 
   name        = var.security_group_name
   description = var.security_group_description
