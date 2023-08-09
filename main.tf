@@ -20,6 +20,18 @@ resource "random_password" "mq_application_password" {
   special = false
 }
 
+resource "aws_mq_configuration" "rabbitmq" {
+  name           = "${var.rabbitmq_name}-config"
+  engine_type    = var.engine_type
+  engine_version = var.engine_version
+
+  data = <<DATA
+{
+  "max_connections": 1000  
+}
+DATA
+}
+
 resource "aws_mq_broker" "rabbitmq" {
   broker_name = var.rabbitmq_name
   engine_type = var.engine_type
@@ -33,6 +45,11 @@ resource "aws_mq_broker" "rabbitmq" {
   subnet_ids                 = var.subnet_ids
 
   security_groups = local.broker_security_groups
+
+  configuration {
+    id       = aws_mq_configuration.rabbitmq.id
+    revision = aws_mq_configuration.rabbitmq.latest_revision  
+  }
 
   logs {
     general = var.enable_cloudwatch_logs
