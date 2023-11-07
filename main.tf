@@ -39,10 +39,13 @@ resource "aws_mq_broker" "rabbitmq" {
     audit   = false
   }
 
-  maintenance_window_start_time {
-    day_of_week = var.maintenance_window_start_time.mw_day_of_week
-    time_of_day = var.maintenance_window_start_time.mw_time_of_day
-    time_zone   = var.maintenance_window_start_time.mw_time_zone
+  dynamic "maintenance_window_start_time" {
+    for_each = var.enable_maintenance_window ? [1] : []
+    content {
+      day_of_week = var.maintenance_window_start_time.mw_day_of_week
+      time_of_day = var.maintenance_window_start_time.mw_time_of_day
+      time_zone   = var.maintenance_window_start_time.mw_time_zone
+    }
   }
 
   user {
