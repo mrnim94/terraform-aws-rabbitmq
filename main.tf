@@ -25,11 +25,11 @@ resource "aws_mq_configuration" "rabbitmq" {
   engine_type    = var.engine_type
   engine_version = var.engine_version
 
-  data = <<DATA
-{
-  "max_connections": 1000  
-}
-DATA
+  data = <<EOT
+# By default the delivery acknowledgement timeout is infinite in RabbitMQ versions prior to 3.8.15
+# If you upgrade your broker to a more recent version, the default timeout will be 30 minutes
+consumer_timeout = 1800000
+EOT
 }
 
 resource "aws_mq_broker" "rabbitmq" {
