@@ -71,6 +71,12 @@ variable "enable_cloudwatch_logs" {
   default = true
 }
 
+variable "enable_maintenance_window" {
+  description = "Set to true to enable the maintenance window for the MQ broker"
+  type        = bool
+  default     = false // Or true, depending on your desired default behavior
+}
+
 variable "maintenance_window_start_time" {
   type = object({
     mw_day_of_week = string
