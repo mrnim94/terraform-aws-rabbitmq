@@ -108,4 +108,8 @@ module "rabbitmq" {
 }
 ```
 
+## How to Get Password of RabbitMQ(AmazonMQ)   
+You can get username and password in `terraform.tfstate` file
+
+
 [![Image](https://nimtechnology.com/wp-content/uploads/2023/04/image-96.png "[RabbitMQ/AWS] Install RabbitMQ on AWS based on Amazon MQ. ")](https://nimtechnology.com/2023/04/22/rabbitmq-aws-install-rabbitmq-on-aws-based-on-amazon-mq/)
