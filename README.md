@@ -163,7 +163,9 @@ module "rabbitmq" {
     }
   ]
 }
-```
+```   
+
+Pay attention to: Deployment mode **[CLUSTER_MULTI_AZ]** is not available on instance type **[MQ_T3_MICRO]**
 
 ## How to Get Password of RabbitMQ(AmazonMQ)   
 You can get username and password in `terraform.tfstate` file
