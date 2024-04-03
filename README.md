@@ -108,6 +108,63 @@ module "rabbitmq" {
 }
 ```
 
+## Create RabbitMQ Cluster
+
+```hcl
+# output "vpc_id" {
+#   value = data.aws_vpc.selected.id
+# }
+
+# output "subnet_id" {
+#   value = data.aws_subnet.selected.id
+# }
+
+data terraform_remote_state "network" {
+    backend = "s3"
+    config = {
+        bucket = "private-windows-mdaas-eks-tf-lock"
+        key = "network.tfstate"
+        region = "us-east-1"
+     }
+}
+
+module "rabbitmq" {
+  source  = "github.com/mrnim94/terraform-aws-rabbitmq?ref=master"
+  # insert the 2 required variables here
+  rabbitmq_name = "rabbitmq-${var.business_divsion}-${var.environment}"
+  engine_version = "3.8.6"
+  deployment_mode = "CLUSTER_MULTI_AZ"
+  subnet_ids = data.terraform_remote_state.network.outputs.private_subnets
+  vpc_id = data.terraform_remote_state.network.outputs.vpc_id
+  create_security_group = "true"
+  publicly_accessible = "false"
+  host_instance_type = "mq.m5.large"
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 5671
+      to_port     = 5671
+      protocol    = "tcp"
+      description = "access to RabbitMQ"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      description = "access to https"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      description = "access to http"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
+}
+```
+
 ## How to Get Password of RabbitMQ(AmazonMQ)   
 You can get username and password in `terraform.tfstate` file
 
