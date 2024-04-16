@@ -110,6 +110,8 @@ module "rabbitmq" {
 
 ## Create RabbitMQ Cluster
 
+### Get VPC and Subnets from the remote tfstate
+
 ```hcl
 # output "vpc_id" {
 #   value = data.aws_vpc.selected.id
@@ -163,7 +165,76 @@ module "rabbitmq" {
     }
   ]
 }
-```   
+``` 
+
+### Get VPC and Subnets from data sources
+
+```hcl
+
+data "aws_vpc" "selected" {
+  tags = {
+    Name = "dev-mdcl-mdaas-engine" # Replace with your VPC's tag name
+  }
+}
+
+
+# output "vpc_id" {
+#   value = data.aws_vpc.selected.id
+# }
+
+data "aws_subnets" "private_networks" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.selected.id]
+  }
+
+  filter {
+    name   = "tag:kubernetes.io/role/internal-elb"
+    values = ["1"]
+  }
+}
+
+# output "subnet_ids" {
+#   value = data.aws_subnets.example.ids
+# }
+
+module "rabbitmq" {
+  source  = "mrnim94/rabbitmq/aws"
+  version = "0.1.1"
+  # insert the 2 required variables here
+  rabbitmq_name         = "rabbitmq-${var.business_divsion}-${var.environment}-19-02-2024"
+  engine_version        = "3.10.20"
+  deployment_mode       = "CLUSTER_MULTI_AZ"
+  subnet_ids            = data.aws_subnets.private_networks.ids
+  vpc_id                = data.aws_vpc.selected.id
+  host_instance_type = "mq.m5.large"
+  create_security_group = "true"
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 5671
+      to_port     = 5671
+      protocol    = "tcp"
+      description = "access to RabbitMQ"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      description = "access to https"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      description = "access to http"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
+}
+
+```
 
 Pay attention to: Deployment mode **[CLUSTER_MULTI_AZ]** is not available on instance type **[MQ_T3_MICRO]**
 
