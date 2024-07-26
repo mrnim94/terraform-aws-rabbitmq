@@ -15,6 +15,12 @@ variable "engine_version" {
   default     = "3.8.6"
 }
 
+variable "apply_immediately" {
+  type        = bool
+  description = "(Optional) Specifies whether any broker modifications are applied immediately, or during the next maintenance window. Default is false"
+  default     = false
+}
+
 variable "host_instance_type" {
   type        = string
   description = "The broker's instance type. e.g. mq.t2.micro or mq.m4.large"
@@ -22,9 +28,9 @@ variable "host_instance_type" {
 }
 
 variable "deployment_mode" {
-  type    = string
+  type        = string
   description = "(Optional) Deployment mode of the broker. Valid values are `SINGLE_INSTANCE`, `ACTIVE_STANDBY_MULTI_AZ`, and `CLUSTER_MULTI_AZ`"
-  default = "SINGLE_INSTANCE"
+  default     = "SINGLE_INSTANCE"
 }
 
 variable "auto_minor_version_upgrade" {

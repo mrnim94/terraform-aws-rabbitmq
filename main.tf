@@ -21,13 +21,15 @@ resource "random_password" "mq_application_password" {
 }
 
 resource "aws_mq_broker" "rabbitmq" {
-  broker_name = var.rabbitmq_name
-  engine_type = var.engine_type
+  broker_name    = var.rabbitmq_name
+  engine_type    = var.engine_type
   engine_version = var.engine_version
 
+  apply_immediately = var.apply_immediately
+
   # the most cheap type is mq.m5.large on multi az deployment mode, mq.t3.micro is available on SINGLE_INSTANCE deployment mode.
-  host_instance_type = var.host_instance_type
-  deployment_mode     = var.deployment_mode
+  host_instance_type         = var.host_instance_type
+  deployment_mode            = var.deployment_mode
   auto_minor_version_upgrade = var.auto_minor_version_upgrade
   publicly_accessible        = var.publicly_accessible
   subnet_ids                 = var.subnet_ids
