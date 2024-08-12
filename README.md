@@ -1,4 +1,5 @@
 # terraform-aws-rabbitmq
+we are publishing our module to RabbitMQ AWS Terraform
 
 ## You can install RabbitMQ on AWS easily.
 I have refer 3 public modules:  
